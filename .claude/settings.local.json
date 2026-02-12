@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(anchor:*)",
+      "Bash(solana:*)",
+      "Bash(rustc:*)",
+      "Bash(cargo:*)",
+      "WebSearch",
+      "WebFetch(domain:crates.io)",
+      "WebFetch(domain:docs.rs)",
+      "WebFetch(domain:docs.pyth.network)",
+      "WebFetch(domain:www.anchor-lang.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:gist.github.com)"
+    ]
+  }
+}
