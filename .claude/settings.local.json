@@ -16,7 +16,10 @@
       "Bash(rustup run solana cargo:*)",
       "Bash(yarn add:*)",
       "Bash(git init:*)",
-      "Bash(git branch:*)"
+      "Bash(git branch:*)",
+      "Bash(npm install:*)",
+      "Bash(npx next build:*)",
+      "Bash(timeout 10 npx next dev:*)"
     ]
   }
 }

@@ -3,12 +3,7 @@
 import { useState, useCallback } from "react";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { useProgram } from "./useProgram";
-import {
-  getUserVaultPda,
-  getGlobalStatePda,
-  getPriceFeedPda,
-  getPositionPda,
-} from "@/lib/pdas";
+import { getPositionPda } from "@/lib/pdas";
 import { useGlobalState } from "./useGlobalState";
 import BN from "bn.js";
 import type { Direction } from "@/types";
@@ -45,11 +40,8 @@ export function useOpenPosition() {
           })
           .accounts({
             user: wallet.publicKey,
-            userVault: getUserVaultPda(wallet.publicKey),
             position: positionPda,
-            globalState: getGlobalStatePda(),
-            priceFeed: getPriceFeedPda(),
-          })
+          } as any)
           .rpc();
         return tx;
       } finally {

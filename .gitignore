@@ -5,3 +5,17 @@ target
 node_modules
 test-ledger
 .yarn
+
+# Next.js
+.next
+out
+
+# Build / cache
+dist
+build
+*.tsbuildinfo
+
+# Env
+.env
+.env.local
+.env.*.local

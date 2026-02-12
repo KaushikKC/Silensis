@@ -4,11 +4,6 @@ import { useState, useCallback } from "react";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { getAssociatedTokenAddress } from "@solana/spl-token";
 import { useProgram } from "./useProgram";
-import {
-  getUserVaultPda,
-  getGlobalStatePda,
-  getTreasuryPda,
-} from "@/lib/pdas";
 import { useGlobalState } from "./useGlobalState";
 import BN from "bn.js";
 
@@ -33,10 +28,7 @@ export function useWithdraw() {
           .accounts({
             user: wallet.publicKey,
             userAta,
-            userVault: getUserVaultPda(wallet.publicKey),
-            globalState: getGlobalStatePda(),
-            treasury: getTreasuryPda(),
-          })
+          } as any)
           .rpc();
         return tx;
       } finally {
