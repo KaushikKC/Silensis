@@ -5,11 +5,11 @@ package_manager = "yarn"
 resolution = true
 skip-lint = false
 
-[programs.localnet]
-mini_perps = "NNKKQChc4oxcMryYtYrZ3bHztZCTNkP9iBVhV2czDiX"
-
 [programs.devnet]
 mini_perps = "NNKKQChc4oxcMryYtYrZ3bHztZCTNkP9iBVhV2czDiX"
+
+[programs.localnet]
+mini_perps = "ErsZC2zCgRDTHH83C7Bg8Xi9sr47jE5gGNzCdsqfKsK2"
 
 [registry]
 url = "https://api.apr.dev"

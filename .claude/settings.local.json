@@ -11,7 +11,12 @@
       "WebFetch(domain:docs.pyth.network)",
       "WebFetch(domain:www.anchor-lang.com)",
       "WebFetch(domain:github.com)",
-      "WebFetch(domain:gist.github.com)"
+      "WebFetch(domain:gist.github.com)",
+      "Bash(rustup toolchain:*)",
+      "Bash(rustup run solana cargo:*)",
+      "Bash(yarn add:*)",
+      "Bash(git init:*)",
+      "Bash(git branch:*)"
     ]
   }
 }

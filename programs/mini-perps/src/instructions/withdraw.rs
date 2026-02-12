@@ -56,7 +56,7 @@ pub struct Withdraw<'info> {
         mut,
         seeds = [USER_VAULT_SEED, user.key().as_ref()],
         bump = user_vault.bump,
-        has_one = owner @ PerpsError::Unauthorized,
+        constraint = user_vault.owner == user.key() @ PerpsError::Unauthorized,
     )]
     pub user_vault: Account<'info, UserVault>,
 
@@ -77,7 +77,3 @@ pub struct Withdraw<'info> {
 
     pub token_program: Program<'info, Token>,
 }
-
-// UserVault doesn't have an `owner` field that Anchor auto-checks unless we tell it
-// We use has_one = owner, which checks user_vault.owner == owner.key()
-// We need to add the owner account to the struct
