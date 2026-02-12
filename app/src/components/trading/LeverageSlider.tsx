@@ -7,7 +7,7 @@ interface LeverageSliderProps {
   onChange: (value: number) => void;
 }
 
-const presets = [1, 2, 3, 5, 10];
+const presets = [1, 2, 5, 10, 50];
 
 export function LeverageSlider({ value, onChange }: LeverageSliderProps) {
   return (

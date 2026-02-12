@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import BN from "bn.js";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { calculatePnl, priceToNumber, usdcToNumber, leverageToNumber } from "@/lib/calculations";
+import { calculatePnl, calculateLiquidationPrice, priceToNumber, sizeToNumber, usdcToNumber, leverageToNumber } from "@/lib/calculations";
 import { formatUsd, formatPnl, formatNumber } from "@/lib/formatting";
 import { getDirection } from "@/types";
 import type { PositionAccount } from "@/types";
@@ -20,10 +20,11 @@ export function PositionRow({ position, currentPrice, onClose, closing }: Positi
   const dir = getDirection(position.direction);
   const pnl = calculatePnl(dir, position.entryPrice, currentPrice, position.size);
   const entry = priceToNumber(position.entryPrice);
-  const size = priceToNumber(position.size);
+  const size = sizeToNumber(position.size);
   const margin = usdcToNumber(position.margin);
   const lev = leverageToNumber(position.leverage);
   const pnlPct = margin > 0 ? (pnl / margin) * 100 : 0;
+  const liqPrice = calculateLiquidationPrice(dir, position.entryPrice, position.margin, position.size);
 
   return (
     <motion.tr
@@ -43,6 +44,7 @@ export function PositionRow({ position, currentPrice, onClose, closing }: Positi
       <td className="py-3 px-3 text-sm tabular-nums">{formatNumber(size, 4)} SOL</td>
       <td className="py-3 px-3 text-sm tabular-nums">{formatUsd(entry)}</td>
       <td className="py-3 px-3 text-sm tabular-nums">{formatUsd(margin)}</td>
+      <td className="py-3 px-3 text-sm tabular-nums text-yellow-600">{formatUsd(liqPrice)}</td>
       <td className="py-3 px-3">
         <span
           className={`text-sm font-semibold tabular-nums ${

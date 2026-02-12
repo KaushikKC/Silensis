@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { useDeposit } from "@/hooks/useDeposit";
 import { numberToUsdcBn } from "@/lib/calculations";
+import { parseTransactionError } from "@/lib/errors";
 
 interface DepositFormProps {
   onSuccess: () => void;
@@ -28,7 +29,7 @@ export function DepositForm({ onSuccess, onError }: DepositFormProps) {
       setAmount("");
       onSuccess();
     } catch (err: any) {
-      onError(err.message || "Deposit failed");
+      onError(parseTransactionError(err));
     }
   };
 

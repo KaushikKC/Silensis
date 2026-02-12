@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { useWithdraw } from "@/hooks/useWithdraw";
 import { numberToUsdcBn } from "@/lib/calculations";
+import { parseTransactionError } from "@/lib/errors";
 
 interface WithdrawFormProps {
   onSuccess: () => void;
@@ -28,7 +29,7 @@ export function WithdrawForm({ onSuccess, onError }: WithdrawFormProps) {
       setAmount("");
       onSuccess();
     } catch (err: any) {
-      onError(err.message || "Withdrawal failed");
+      onError(parseTransactionError(err));
     }
   };
 

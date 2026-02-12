@@ -9,6 +9,7 @@ import { PositionRow } from "./PositionRow";
 import { usePositions } from "@/hooks/usePositions";
 import { usePriceFeed } from "@/hooks/usePriceFeed";
 import { useClosePosition } from "@/hooks/useClosePosition";
+import { parseTransactionError } from "@/lib/errors";
 
 interface PositionsTableProps {
   onSuccess: () => void;
@@ -28,7 +29,7 @@ export function PositionsTable({ onSuccess, onError }: PositionsTableProps) {
       onSuccess();
       refetch();
     } catch (err: any) {
-      onError(err.message || "Close position failed");
+      onError(parseTransactionError(err));
     } finally {
       setClosingId(null);
     }
@@ -64,6 +65,7 @@ export function PositionsTable({ onSuccess, onError }: PositionsTableProps) {
                 <th className="text-left text-xs font-medium text-gray-400 pb-2 px-3">Size</th>
                 <th className="text-left text-xs font-medium text-gray-400 pb-2 px-3">Entry</th>
                 <th className="text-left text-xs font-medium text-gray-400 pb-2 px-3">Margin</th>
+                <th className="text-left text-xs font-medium text-gray-400 pb-2 px-3">Liq. Price</th>
                 <th className="text-left text-xs font-medium text-gray-400 pb-2 px-3">PnL</th>
                 <th className="pb-2 pl-3"></th>
               </tr>

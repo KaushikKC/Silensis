@@ -9,8 +9,9 @@ import { LeverageSlider } from "./LeverageSlider";
 import { useOpenPosition } from "@/hooks/useOpenPosition";
 import { usePriceFeed } from "@/hooks/usePriceFeed";
 import { useUserVault } from "@/hooks/useUserVault";
-import { numberToPriceBn, numberToLeverageBn, priceToNumber, usdcToNumber } from "@/lib/calculations";
+import { numberToSizeBn, numberToLeverageBn, priceToNumber, usdcToNumber } from "@/lib/calculations";
 import { formatUsd } from "@/lib/formatting";
+import { parseTransactionError } from "@/lib/errors";
 import type { Direction } from "@/types";
 
 interface OrderFormProps {
@@ -39,6 +40,17 @@ export function OrderForm({ direction, onSuccess, onError }: OrderFormProps) {
     return (sizeNum * currentPrice) / leverage;
   }, [size, leverage, currentPrice]);
 
+  const liqPrice = useMemo(() => {
+    const sizeNum = parseFloat(size);
+    if (!sizeNum || !currentPrice || !marginRequired) return 0;
+    const marginPerUnit = marginRequired / sizeNum;
+    if (direction === "long") {
+      return Math.max(0, currentPrice - marginPerUnit);
+    } else {
+      return currentPrice + marginPerUnit;
+    }
+  }, [size, currentPrice, marginRequired, direction]);
+
   const handleSubmit = async () => {
     const sizeNum = parseFloat(size);
     if (!sizeNum || sizeNum <= 0) {
@@ -50,13 +62,13 @@ export function OrderForm({ direction, onSuccess, onError }: OrderFormProps) {
       return;
     }
     try {
-      const sizeBn = numberToPriceBn(sizeNum);
+      const sizeBn = numberToSizeBn(sizeNum);
       const leverageBn = numberToLeverageBn(leverage);
       await openPosition(direction, sizeBn, leverageBn);
       setSize("");
       onSuccess();
     } catch (err: any) {
-      onError(err.message || "Transaction failed");
+      onError(parseTransactionError(err));
     }
   };
 
@@ -83,6 +95,12 @@ export function OrderForm({ direction, onSuccess, onError }: OrderFormProps) {
         <div className="flex justify-between text-xs">
           <span className="text-gray-500">Margin Required</span>
           <span className="font-medium tabular-nums">{formatUsd(marginRequired)}</span>
+        </div>
+        <div className="flex justify-between text-xs">
+          <span className="text-gray-500">Liq. Price</span>
+          <span className="font-medium tabular-nums text-yellow-600">
+            {liqPrice > 0 ? formatUsd(liqPrice) : "—"}
+          </span>
         </div>
         <div className="flex justify-between text-xs">
           <span className="text-gray-500">Available</span>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useGlobalState } from "@/hooks/useGlobalState";
-import { priceToNumber } from "@/lib/calculations";
+import { priceToNumber, calculateFundingRate } from "@/lib/calculations";
 import { formatUsd, formatNumber } from "@/lib/formatting";
 import { Card } from "@/components/ui/Card";
 import { Spinner } from "@/components/ui/Spinner";
@@ -46,7 +46,8 @@ export function MarketStats() {
 
   const longOi = priceToNumber(globalState.totalLongOi);
   const shortOi = priceToNumber(globalState.totalShortOi);
-  const maxLev = globalState.maxLeverage.toNumber() / 100;
+  const maxLev = globalState.maxLeverage.toNumber();
+  const fundingRate = calculateFundingRate(globalState.totalLongOi, globalState.totalShortOi);
 
   return (
     <Card className="p-5">
@@ -61,6 +62,11 @@ export function MarketStats() {
               ? `${formatNumber((longOi / (longOi + shortOi)) * 100, 1)}% L`
               : "—"
           }
+        />
+        <StatRow
+          label="Funding Rate"
+          value={`${fundingRate > 0 ? "+" : ""}${formatNumber(fundingRate, 4)}%`}
+          color={fundingRate > 0 ? "text-short" : fundingRate < 0 ? "text-long" : undefined}
         />
         <StatRow label="Max Leverage" value={`${maxLev}x`} />
         <StatRow
