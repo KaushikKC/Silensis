@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-page: #f8f9fb;
+  --color-card: #ffffff;
+  --color-input: #f1f3f7;
+  --color-accent: #6366f1;
+  --color-long: #16a34a;
+  --color-short: #dc2626;
+  --color-text: #111827;
+  --color-text-secondary: #6b7280;
+  --color-border: #e5e7eb;
+}
+
+body {
+  background-color: var(--color-page);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Wallet adapter overrides */
+.wallet-adapter-button {
+  background-color: var(--color-accent) !important;
+  border-radius: 0.75rem !important;
+  font-family: var(--font-dm-sans), system-ui, sans-serif !important;
+  font-weight: 500 !important;
+  height: 40px !important;
+  padding: 0 20px !important;
+  font-size: 14px !important;
+}
+
+.wallet-adapter-button:hover {
+  background-color: #4f46e5 !important;
+}
+
+.wallet-adapter-modal-wrapper {
+  font-family: var(--font-dm-sans), system-ui, sans-serif !important;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Number input arrows removal */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
