@@ -16,10 +16,10 @@ export function TradingPanel({ onSuccess, onError }: TradingPanelProps) {
 
   return (
     <Card className="p-5">
-      <h3 className="text-sm font-semibold text-gray-900 mb-4">Trade</h3>
+      <h3 className="text-sm font-semibold text-text-primary mb-4">Trade</h3>
 
       {/* Direction Tabs */}
-      <div className="relative flex bg-input-bg rounded-xl p-1 mb-5">
+      <div className="relative flex bg-input-bg rounded-xl p-1 mb-5 border border-border/50">
         <motion.div
           className={`absolute top-1 bottom-1 rounded-lg ${
             direction === "long" ? "bg-long" : "bg-short"
@@ -31,7 +31,7 @@ export function TradingPanel({ onSuccess, onError }: TradingPanelProps) {
         <button
           onClick={() => setDirection("long")}
           className={`relative z-10 flex-1 py-2 text-sm font-semibold rounded-lg transition-colors ${
-            direction === "long" ? "text-white" : "text-gray-500"
+            direction === "long" ? "text-white" : "text-text-secondary"
           }`}
         >
           Long
@@ -39,14 +39,18 @@ export function TradingPanel({ onSuccess, onError }: TradingPanelProps) {
         <button
           onClick={() => setDirection("short")}
           className={`relative z-10 flex-1 py-2 text-sm font-semibold rounded-lg transition-colors ${
-            direction === "short" ? "text-white" : "text-gray-500"
+            direction === "short" ? "text-white" : "text-text-secondary"
           }`}
         >
           Short
         </button>
       </div>
 
-      <OrderForm direction={direction} onSuccess={onSuccess} onError={onError} />
+      <OrderForm
+        direction={direction}
+        onSuccess={onSuccess}
+        onError={onError}
+      />
     </Card>
   );
 }

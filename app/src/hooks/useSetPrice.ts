@@ -1,12 +1,14 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { useAnchorWallet } from "@solana/wallet-adapter-react";
+import { useAnchorWallet, useConnection } from "@solana/wallet-adapter-react";
 import { useProgram } from "./useProgram";
 import { getGlobalStatePda, getPriceFeedPda } from "@/lib/pdas";
+import { resolveTimeoutSignature } from "@/lib/confirm";
 import BN from "bn.js";
 
 export function useSetPrice() {
+  const { connection } = useConnection();
   const { program } = useProgram();
   const wallet = useAnchorWallet();
   const [loading, setLoading] = useState(false);
@@ -26,11 +28,15 @@ export function useSetPrice() {
           } as any)
           .rpc();
         return tx;
+      } catch (err) {
+        const resolved = await resolveTimeoutSignature(connection, err);
+        if (resolved) return resolved;
+        throw err;
       } finally {
         setLoading(false);
       }
     },
-    [program, wallet]
+    [connection, program, wallet],
   );
 
   return { setPrice, loading };

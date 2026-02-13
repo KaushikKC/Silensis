@@ -14,17 +14,19 @@ export function BalanceCard() {
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <span className="text-sm text-gray-500">Total Balance</span>
-        <span className="text-lg font-bold tabular-nums">{formatUsd(deposited)}</span>
+        <span className="text-sm text-text-secondary">Total Balance</span>
+        <span className="text-lg font-bold tabular-nums text-text-primary">
+          {formatUsd(deposited)}
+        </span>
       </div>
       <div className="flex items-center justify-between">
-        <span className="text-sm text-gray-500">Locked Margin</span>
-        <span className="text-sm font-semibold text-gray-600 tabular-nums">
+        <span className="text-sm text-text-secondary">Locked Margin</span>
+        <span className="text-sm font-semibold text-text-secondary tabular-nums">
           {formatUsd(locked)}
         </span>
       </div>
       <div className="flex items-center justify-between">
-        <span className="text-sm text-gray-500">Available</span>
+        <span className="text-sm text-text-secondary">Available</span>
         <span className="text-sm font-semibold text-long tabular-nums">
           {formatUsd(available)}
         </span>

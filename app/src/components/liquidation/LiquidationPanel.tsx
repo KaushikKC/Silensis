@@ -30,7 +30,10 @@ interface LiquidationPanelProps {
   onError: (msg: string) => void;
 }
 
-export function LiquidationPanel({ onSuccess, onError }: LiquidationPanelProps) {
+export function LiquidationPanel({
+  onSuccess,
+  onError,
+}: LiquidationPanelProps) {
   const { positions, loading, refetch } = useAllPositions();
   const { priceFeed } = usePriceFeed();
   const { liquidate } = useLiquidate();
@@ -42,8 +45,20 @@ export function LiquidationPanel({ onSuccess, onError }: LiquidationPanelProps) 
   const sortedPositions = [...positions].sort((a, b) => {
     const dirA = getDirection(a.account.direction);
     const dirB = getDirection(b.account.direction);
-    const ratioA = calculateMarginRatio(dirA, a.account.entryPrice, currentPrice, a.account.size, a.account.margin);
-    const ratioB = calculateMarginRatio(dirB, b.account.entryPrice, currentPrice, b.account.size, b.account.margin);
+    const ratioA = calculateMarginRatio(
+      dirA,
+      a.account.entryPrice,
+      currentPrice,
+      a.account.size,
+      a.account.margin,
+    );
+    const ratioB = calculateMarginRatio(
+      dirB,
+      b.account.entryPrice,
+      currentPrice,
+      b.account.size,
+      b.account.margin,
+    );
     return ratioA - ratioB;
   });
 
@@ -63,11 +78,11 @@ export function LiquidationPanel({ onSuccess, onError }: LiquidationPanelProps) 
   return (
     <Card className="p-5">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-semibold text-gray-900">
+        <h3 className="text-sm font-semibold text-text-primary">
           Liquidations
         </h3>
         {sortedPositions.length > 0 && (
-          <span className="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+          <span className="text-xs font-semibold text-text-secondary bg-border-light px-2.5 py-1 rounded-full">
             {sortedPositions.length} positions
           </span>
         )}
@@ -78,7 +93,7 @@ export function LiquidationPanel({ onSuccess, onError }: LiquidationPanelProps) 
           <Spinner />
         </div>
       ) : sortedPositions.length === 0 ? (
-        <p className="text-sm text-gray-400 text-center py-8">
+        <p className="text-sm text-text-muted text-center py-8">
           No open positions to monitor
         </p>
       ) : (
@@ -91,16 +106,21 @@ export function LiquidationPanel({ onSuccess, onError }: LiquidationPanelProps) 
                 pos.account.entryPrice,
                 currentPrice,
                 pos.account.size,
-                pos.account.margin
+                pos.account.margin,
               );
               const isLiquidatable = marginRatio < MAINTENANCE_MARGIN_PCT;
               const liqPrice = calculateLiquidationPrice(
                 dir,
                 pos.account.entryPrice,
                 pos.account.margin,
-                pos.account.size
+                pos.account.size,
               );
-              const pnl = calculatePnl(dir, pos.account.entryPrice, currentPrice, pos.account.size);
+              const pnl = calculatePnl(
+                dir,
+                pos.account.entryPrice,
+                currentPrice,
+                pos.account.size,
+              );
               const size = sizeToNumber(pos.account.size);
               const lev = leverageToNumber(pos.account.leverage);
 
@@ -112,10 +132,10 @@ export function LiquidationPanel({ onSuccess, onError }: LiquidationPanelProps) 
                   exit={{ opacity: 0, y: -4 }}
                   className={`rounded-xl border p-3 ${
                     isLiquidatable
-                      ? "border-red-200 bg-red-50/50"
+                      ? "border-red-200 bg-short-bg/60"
                       : marginRatio < MAINTENANCE_MARGIN_PCT * 2
-                      ? "border-yellow-200 bg-yellow-50/30"
-                      : "border-gray-100"
+                      ? "border-amber-200 bg-amber-50/50"
+                      : "border-border-light"
                   }`}
                 >
                   <div className="flex items-center justify-between mb-2">
@@ -123,7 +143,7 @@ export function LiquidationPanel({ onSuccess, onError }: LiquidationPanelProps) 
                       <Badge variant={dir === "long" ? "long" : "short"}>
                         {dir.toUpperCase()} {lev}x
                       </Badge>
-                      <span className="text-xs text-gray-400">
+                      <span className="text-xs text-text-muted">
                         {shortenAddress(pos.account.owner.toBase58())}
                       </span>
                     </div>
@@ -141,21 +161,25 @@ export function LiquidationPanel({ onSuccess, onError }: LiquidationPanelProps) 
 
                   <div className="grid grid-cols-3 gap-2 text-xs">
                     <div>
-                      <span className="text-gray-400">Size</span>
-                      <p className="font-medium tabular-nums">{formatNumber(size, 4)} SOL</p>
+                      <span className="text-text-secondary">Size</span>
+                      <p className="font-medium tabular-nums">
+                        {formatNumber(size, 4)} SOL
+                      </p>
                     </div>
                     <div>
-                      <span className="text-gray-400">Liq. Price</span>
-                      <p className="font-medium tabular-nums text-yellow-600">{formatUsd(liqPrice)}</p>
+                      <span className="text-text-secondary">Liq. Price</span>
+                      <p className="font-medium tabular-nums text-amber-600">
+                        {formatUsd(liqPrice)}
+                      </p>
                     </div>
                     <div>
-                      <span className="text-gray-400">Margin Ratio</span>
+                      <span className="text-text-secondary">Margin Ratio</span>
                       <p
                         className={`font-semibold tabular-nums ${
                           isLiquidatable
                             ? "text-short"
                             : marginRatio < MAINTENANCE_MARGIN_PCT * 2
-                            ? "text-yellow-600"
+                            ? "text-amber-600"
                             : "text-long"
                         }`}
                       >
@@ -170,10 +194,10 @@ export function LiquidationPanel({ onSuccess, onError }: LiquidationPanelProps) 
         </div>
       )}
 
-      <div className="mt-3 pt-3 border-t border-gray-100">
-        <p className="text-xs text-gray-400">
-          Positions below {MAINTENANCE_MARGIN_PCT}% margin ratio can be liquidated.
-          Liquidators earn a 0.5% fee.
+      <div className="mt-3 pt-3 border-t border-border-light">
+        <p className="text-xs text-text-muted">
+          Positions below {MAINTENANCE_MARGIN_PCT}% margin ratio can be
+          liquidated. Liquidators earn a 0.5% fee.
         </p>
       </div>
     </Card>

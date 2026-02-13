@@ -16,7 +16,7 @@ export function PriceHeader() {
     <Card className="p-5">
       <div className="flex items-center gap-2 mb-1">
         <div className="w-2 h-2 rounded-full bg-long animate-pulse" />
-        <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+        <span className="text-xs font-semibold text-text-secondary uppercase tracking-wider">
           SOL / USD
         </span>
       </div>
@@ -33,7 +33,7 @@ export function PriceHeader() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 4 }}
             transition={{ duration: 0.15 }}
-            className="text-3xl font-bold text-gray-900 tabular-nums"
+            className="text-3xl font-bold text-text-primary tabular-nums tracking-tight"
           >
             {formatUsd(price)}
           </motion.div>
@@ -41,8 +41,9 @@ export function PriceHeader() {
       )}
 
       {priceFeed && (
-        <p className="text-xs text-gray-400 mt-1">
-          Updated {new Date(priceFeed.timestamp.toNumber() * 1000).toLocaleTimeString()}
+        <p className="text-xs text-text-muted mt-1">
+          Updated{" "}
+          {new Date(priceFeed.timestamp.toNumber() * 1000).toLocaleTimeString()}
         </p>
       )}
     </Card>

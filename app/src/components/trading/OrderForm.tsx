@@ -9,7 +9,12 @@ import { LeverageSlider } from "./LeverageSlider";
 import { useOpenPosition } from "@/hooks/useOpenPosition";
 import { usePriceFeed } from "@/hooks/usePriceFeed";
 import { useUserVault } from "@/hooks/useUserVault";
-import { numberToSizeBn, numberToLeverageBn, priceToNumber, usdcToNumber } from "@/lib/calculations";
+import {
+  numberToSizeBn,
+  numberToLeverageBn,
+  priceToNumber,
+  usdcToNumber,
+} from "@/lib/calculations";
 import { formatUsd } from "@/lib/formatting";
 import { parseTransactionError } from "@/lib/errors";
 import type { Direction } from "@/types";
@@ -87,24 +92,30 @@ export function OrderForm({ direction, onSuccess, onError }: OrderFormProps) {
 
       <LeverageSlider value={leverage} onChange={setLeverage} />
 
-      <div className="bg-input-bg rounded-xl p-3 space-y-2">
+      <div className="bg-input-bg rounded-xl p-3.5 space-y-2 border border-border/50">
         <div className="flex justify-between text-xs">
-          <span className="text-gray-500">Entry Price</span>
-          <span className="font-medium tabular-nums">{formatUsd(currentPrice)}</span>
+          <span className="text-text-secondary">Entry Price</span>
+          <span className="font-semibold tabular-nums text-text-primary">
+            {formatUsd(currentPrice)}
+          </span>
         </div>
         <div className="flex justify-between text-xs">
-          <span className="text-gray-500">Margin Required</span>
-          <span className="font-medium tabular-nums">{formatUsd(marginRequired)}</span>
+          <span className="text-text-secondary">Margin Required</span>
+          <span className="font-semibold tabular-nums text-text-primary">
+            {formatUsd(marginRequired)}
+          </span>
         </div>
         <div className="flex justify-between text-xs">
-          <span className="text-gray-500">Liq. Price</span>
-          <span className="font-medium tabular-nums text-yellow-600">
+          <span className="text-text-secondary">Liq. Price</span>
+          <span className="font-semibold tabular-nums text-amber-600">
             {liqPrice > 0 ? formatUsd(liqPrice) : "—"}
           </span>
         </div>
         <div className="flex justify-between text-xs">
-          <span className="text-gray-500">Available</span>
-          <span className="font-medium tabular-nums">{formatUsd(availableBalance)}</span>
+          <span className="text-text-secondary">Available</span>
+          <span className="font-semibold tabular-nums text-text-primary">
+            {formatUsd(availableBalance)}
+          </span>
         </div>
       </div>
 
@@ -116,11 +127,7 @@ export function OrderForm({ direction, onSuccess, onError }: OrderFormProps) {
         disabled={!connected || !size}
         onClick={handleSubmit}
       >
-        {!connected
-          ? "Connect Wallet"
-          : isLong
-          ? "Open Long"
-          : "Open Short"}
+        {!connected ? "Connect Wallet" : isLong ? "Open Long" : "Open Short"}
       </Button>
     </div>
   );

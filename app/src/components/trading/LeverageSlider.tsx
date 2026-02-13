@@ -13,8 +13,12 @@ export function LeverageSlider({ value, onChange }: LeverageSliderProps) {
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <label className="text-sm font-medium text-gray-500">Leverage</label>
-        <span className="text-sm font-bold text-gray-900">{value}x</span>
+        <label className="text-sm font-semibold text-text-secondary">
+          Leverage
+        </label>
+        <span className="text-sm font-bold text-text-primary tabular-nums">
+          {value}x
+        </span>
       </div>
 
       <input
@@ -24,11 +28,11 @@ export function LeverageSlider({ value, onChange }: LeverageSliderProps) {
         step={1}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full h-1.5 bg-gray-200 rounded-full appearance-none cursor-pointer
+        className="w-full h-2 bg-border rounded-full appearance-none cursor-pointer
           [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4
           [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full
           [&::-webkit-slider-thumb]:bg-accent [&::-webkit-slider-thumb]:shadow-md
-          [&::-webkit-slider-thumb]:cursor-pointer"
+          [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:border-0"
       />
 
       <div className="flex gap-2">
@@ -36,10 +40,10 @@ export function LeverageSlider({ value, onChange }: LeverageSliderProps) {
           <button
             key={p}
             onClick={() => onChange(p)}
-            className={`flex-1 py-1 rounded-lg text-xs font-semibold transition-colors ${
+            className={`flex-1 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 ${
               value === p
-                ? "bg-accent text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                ? "bg-accent text-white shadow-sm"
+                : "bg-border-light text-text-secondary hover:bg-input-bg"
             }`}
           >
             {p}x

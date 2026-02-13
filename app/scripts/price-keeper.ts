@@ -16,7 +16,8 @@ import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
 
-const idlPath = path.resolve(__dirname, "../../target/idl/mini_perps.json");
+// Use app IDL so program ID matches deployed program (same as setup-localnet and frontend)
+const idlPath = path.resolve(__dirname, "../src/idl/mini_perps.json");
 const idl = JSON.parse(fs.readFileSync(idlPath, "utf-8"));
 
 const RPC_URL = process.env.RPC_URL || "http://127.0.0.1:8899";
@@ -31,7 +32,10 @@ async function main() {
   const secretKey = JSON.parse(fs.readFileSync(walletPath, "utf-8"));
   const payer = Keypair.fromSecretKey(Uint8Array.from(secretKey));
 
-  const connection = new Connection(RPC_URL, "confirmed");
+  const connection = new Connection(RPC_URL, {
+    commitment: "confirmed",
+    confirmTransactionInitialTimeout: 90_000, // 90s for localnet
+  });
   const wallet = new Wallet(payer);
   const provider = new AnchorProvider(connection, wallet, {
     commitment: "confirmed",

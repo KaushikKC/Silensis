@@ -81,24 +81,32 @@ export function AdminPanel({ onSuccess, onError }: AdminPanelProps) {
     : null;
 
   return (
-    <Card className="p-5 border-indigo-200 bg-indigo-50/30">
+    <Card className="p-5 border-accent/20 bg-accent-muted/40">
       <div className="flex items-center gap-2 mb-4">
         <div className="w-2 h-2 rounded-full bg-accent" />
-        <h3 className="text-sm font-semibold text-gray-900">Admin — Oracle</h3>
+        <h3 className="text-sm font-semibold text-text-primary">
+          Admin — Oracle
+        </h3>
       </div>
 
       {staleness !== null && (
         <div className="mb-3 flex items-center gap-2">
-          <span className="text-xs text-gray-500">Price age:</span>
+          <span className="text-xs text-text-secondary">Price age:</span>
           <span
             className={`text-xs font-semibold ${
-              staleness > 25 ? "text-short" : staleness > 15 ? "text-yellow-600" : "text-long"
+              staleness > 25
+                ? "text-short"
+                : staleness > 15
+                ? "text-amber-600"
+                : "text-long"
             }`}
           >
             {staleness}s
           </span>
           {staleness > 25 && (
-            <span className="text-xs text-short font-medium">(STALE — txs will fail)</span>
+            <span className="text-xs text-short font-medium">
+              (STALE — txs will fail)
+            </span>
           )}
         </div>
       )}
@@ -129,9 +137,9 @@ export function AdminPanel({ onSuccess, onError }: AdminPanelProps) {
             type="checkbox"
             checked={autoRefresh}
             onChange={(e) => setAutoRefresh(e.target.checked)}
-            className="rounded border-gray-300 text-accent focus:ring-accent"
+            className="rounded border-border text-accent focus:ring-accent"
           />
-          <span className="text-xs text-gray-600">
+          <span className="text-xs text-text-secondary">
             Auto-refresh every 15s (keeps oracle fresh)
           </span>
         </label>

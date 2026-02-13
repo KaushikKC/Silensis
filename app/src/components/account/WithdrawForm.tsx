@@ -45,7 +45,7 @@ export function WithdrawForm({ onSuccess, onError }: WithdrawFormProps) {
       <Button
         variant="ghost"
         size="md"
-        className="w-full border border-gray-200"
+        className="w-full"
         loading={loading}
         disabled={!connected || !amount}
         onClick={handleSubmit}

@@ -28,8 +28,8 @@ import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
 
-// Load IDL
-const idlPath = path.resolve(__dirname, "../../target/idl/mini_perps.json");
+// Load IDL from app (matches PROGRAM_ID / deployed program); do not use target/idl which can be stale
+const idlPath = path.resolve(__dirname, "../src/idl/mini_perps.json");
 const idl = JSON.parse(fs.readFileSync(idlPath, "utf-8"));
 
 // Config
@@ -44,15 +44,15 @@ async function main() {
   const secretKey = JSON.parse(fs.readFileSync(walletPath, "utf-8"));
   const payer = Keypair.fromSecretKey(Uint8Array.from(secretKey));
 
-  const connection = new Connection(RPC_URL, "confirmed");
+  const connection = new Connection(RPC_URL, {
+    commitment: "confirmed",
+    confirmTransactionInitialTimeout: 90_000,
+  });
   const wallet = new Wallet(payer);
   const provider = new AnchorProvider(connection, wallet, {
     commitment: "confirmed",
   });
   const program = new Program(idl, provider);
-
-  console.log("Payer:", payer.publicKey.toBase58());
-  console.log("Program:", program.programId.toBase58());
 
   // 1. Create USDC mint
   console.log("\n1. Creating USDC mint...");
@@ -130,9 +130,8 @@ async function main() {
 
   console.log("\n=== Setup Complete ===");
   console.log("USDC Mint:", usdcMint.toBase58());
-  console.log("Payer balance: 9,000 USDC in ATA + 1,000 USDC in vault");
-  console.log("\nYou can now run: cd app && npm run dev");
-  console.log("Make sure to keep updating the price (or use the admin panel).");
+  console.log("Payer:", payer.publicKey.toBase58());
+  console.log("Next: cd app && npm run dev");
 }
 
 main().catch((err) => {

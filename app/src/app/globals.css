@@ -3,15 +3,29 @@
 @tailwind utilities;
 
 :root {
-  --color-page: #f8f9fb;
+  /* Light theme — professional palette */
+  --color-page: #f1f5f9;
+  --color-page-warm: #f8fafc;
   --color-card: #ffffff;
-  --color-input: #f1f3f7;
-  --color-accent: #6366f1;
-  --color-long: #16a34a;
+  --color-card-hover: #fafbfc;
+  --color-input: #f1f5f9;
+  --color-input-focus: #e2e8f0;
+  --color-accent: #0f766e;
+  --color-accent-hover: #0d9488;
+  --color-accent-muted: #ccfbf1;
+  --color-long: #059669;
+  --color-long-bg: #ecfdf5;
   --color-short: #dc2626;
-  --color-text: #111827;
-  --color-text-secondary: #6b7280;
-  --color-border: #e5e7eb;
+  --color-short-bg: #fef2f2;
+  --color-text: #0f172a;
+  --color-text-secondary: #64748b;
+  --color-text-muted: #94a3b8;
+  --color-border: #e2e8f0;
+  --color-border-light: #f1f5f9;
+  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04);
+  --shadow-card-hover: 0 4px 12px -2px rgb(0 0 0 / 0.06), 0 2px 6px -2px rgb(0 0 0 / 0.04);
+  --radius-card: 1rem;
+  --radius-input: 0.75rem;
 }
 
 body {
@@ -24,25 +38,28 @@ body {
 /* Wallet adapter overrides */
 .wallet-adapter-button {
   background-color: var(--color-accent) !important;
-  border-radius: 0.75rem !important;
-  font-family: var(--font-dm-sans), system-ui, sans-serif !important;
-  font-weight: 500 !important;
-  height: 40px !important;
-  padding: 0 20px !important;
+  border-radius: var(--radius-input) !important;
+  font-family: var(--font-plus-jakarta), system-ui, sans-serif !important;
+  font-weight: 600 !important;
+  height: 42px !important;
+  padding: 0 22px !important;
   font-size: 14px !important;
+  box-shadow: 0 1px 2px rgb(15 118 110 / 0.2) !important;
 }
 
 .wallet-adapter-button:hover {
-  background-color: #4f46e5 !important;
+  background-color: var(--color-accent-hover) !important;
+  box-shadow: 0 2px 4px rgb(15 118 110 / 0.25) !important;
 }
 
 .wallet-adapter-modal-wrapper {
-  font-family: var(--font-dm-sans), system-ui, sans-serif !important;
+  font-family: var(--font-plus-jakarta), system-ui, sans-serif !important;
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -50,12 +67,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d1d5db;
+  background: #cbd5e1;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
+  background: #94a3b8;
 }
 
 /* Number input arrows removal */

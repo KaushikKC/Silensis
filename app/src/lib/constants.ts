@@ -7,6 +7,21 @@ export const PROGRAM_ID = new PublicKey(
 export const CLUSTER_URL =
   process.env.NEXT_PUBLIC_RPC_URL || "http://127.0.0.1:8899";
 
+const isLocalnet =
+  typeof window === "undefined"
+    ? !process.env.NEXT_PUBLIC_RPC_URL ||
+      process.env.NEXT_PUBLIC_RPC_URL.includes("127.0.0.1") ||
+      process.env.NEXT_PUBLIC_RPC_URL.includes("localhost")
+    : CLUSTER_URL.includes("127.0.0.1") || CLUSTER_URL.includes("localhost");
+
+/** Longer timeout; use "processed" on localnet so confirmation returns sooner when tx lands. */
+export const CONNECTION_CONFIG = {
+  commitment: (isLocalnet ? "processed" : "confirmed") as
+    | "processed"
+    | "confirmed",
+  confirmTransactionInitialTimeout: 90_000, // 90 seconds
+};
+
 // On-chain precision matches the program constants:
 // PRICE_PRECISION = 1_000_000 (6 decimals) — prices, balances, margin, OI
 // SIZE_PRECISION = 1_000_000_000 (9 decimals) — position sizes (SOL lamports)

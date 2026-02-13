@@ -52,11 +52,11 @@ export default function Home() {
     (msg: string) => {
       addToast("error", msg);
     },
-    [addToast]
+    [addToast],
   );
 
   return (
-    <div className="min-h-screen bg-page">
+    <div className="min-h-screen bg-page text-text-primary">
       <Navbar />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6">

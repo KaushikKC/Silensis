@@ -38,11 +38,11 @@ export function PositionsTable({ onSuccess, onError }: PositionsTableProps) {
   return (
     <Card className="p-5">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-semibold text-gray-900">
+        <h3 className="text-sm font-semibold text-text-primary">
           Open Positions
         </h3>
         {positions.length > 0 && (
-          <span className="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+          <span className="text-xs font-semibold text-text-secondary bg-border-light px-2.5 py-1 rounded-full">
             {positions.length}
           </span>
         )}
@@ -53,20 +53,32 @@ export function PositionsTable({ onSuccess, onError }: PositionsTableProps) {
           <Spinner />
         </div>
       ) : positions.length === 0 ? (
-        <p className="text-sm text-gray-400 text-center py-8">
+        <p className="text-sm text-text-muted text-center py-8">
           No open positions
         </p>
       ) : (
         <div className="overflow-x-auto -mx-5 px-5">
           <table className="w-full min-w-[600px]">
             <thead>
-              <tr className="border-b border-gray-100">
-                <th className="text-left text-xs font-medium text-gray-400 pb-2 pr-3">Side</th>
-                <th className="text-left text-xs font-medium text-gray-400 pb-2 px-3">Size</th>
-                <th className="text-left text-xs font-medium text-gray-400 pb-2 px-3">Entry</th>
-                <th className="text-left text-xs font-medium text-gray-400 pb-2 px-3">Margin</th>
-                <th className="text-left text-xs font-medium text-gray-400 pb-2 px-3">Liq. Price</th>
-                <th className="text-left text-xs font-medium text-gray-400 pb-2 px-3">PnL</th>
+              <tr className="border-b border-border-light">
+                <th className="text-left text-xs font-semibold text-text-secondary pb-2 pr-3">
+                  Side
+                </th>
+                <th className="text-left text-xs font-semibold text-text-secondary pb-2 px-3">
+                  Size
+                </th>
+                <th className="text-left text-xs font-semibold text-text-secondary pb-2 px-3">
+                  Entry
+                </th>
+                <th className="text-left text-xs font-semibold text-text-secondary pb-2 px-3">
+                  Margin
+                </th>
+                <th className="text-left text-xs font-semibold text-text-secondary pb-2 px-3">
+                  Liq. Price
+                </th>
+                <th className="text-left text-xs font-semibold text-text-secondary pb-2 px-3">
+                  PnL
+                </th>
                 <th className="pb-2 pl-3"></th>
               </tr>
             </thead>

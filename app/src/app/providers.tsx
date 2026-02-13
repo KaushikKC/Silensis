@@ -6,19 +6,22 @@ import {
   WalletProvider,
 } from "@solana/wallet-adapter-react";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
-import { PhantomWalletAdapter, SolflareWalletAdapter } from "@solana/wallet-adapter-wallets";
-import { CLUSTER_URL } from "@/lib/constants";
+import {
+  PhantomWalletAdapter,
+  SolflareWalletAdapter,
+} from "@solana/wallet-adapter-wallets";
+import { CLUSTER_URL, CONNECTION_CONFIG } from "@/lib/constants";
 
 import "@solana/wallet-adapter-react-ui/styles.css";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const wallets = useMemo(
     () => [new PhantomWalletAdapter(), new SolflareWalletAdapter()],
-    []
+    [],
   );
 
   return (
-    <ConnectionProvider endpoint={CLUSTER_URL}>
+    <ConnectionProvider endpoint={CLUSTER_URL} config={CONNECTION_CONFIG}>
       <WalletProvider wallets={wallets} autoConnect>
         <WalletModalProvider>{children}</WalletModalProvider>
       </WalletProvider>

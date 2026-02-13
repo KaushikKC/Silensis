@@ -13,7 +13,7 @@ export function Card({ children, className = "" }: CardProps) {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.2, ease: "easeOut" }}
-      className={`bg-card rounded-xl shadow-card border border-gray-200 ${className}`}
+      className={`bg-card rounded-2xl shadow-card border border-border ${className}`}
     >
       {children}
     </motion.div>

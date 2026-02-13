@@ -14,9 +14,13 @@ interface StatRowProps {
 
 function StatRow({ label, value, color }: StatRowProps) {
   return (
-    <div className="flex items-center justify-between py-2">
-      <span className="text-sm text-gray-500">{label}</span>
-      <span className={`text-sm font-semibold tabular-nums ${color || "text-gray-900"}`}>
+    <div className="flex items-center justify-between py-2.5">
+      <span className="text-sm text-text-secondary">{label}</span>
+      <span
+        className={`text-sm font-semibold tabular-nums ${
+          color || "text-text-primary"
+        }`}
+      >
         {value}
       </span>
     </div>
@@ -37,7 +41,7 @@ export function MarketStats() {
   if (!globalState) {
     return (
       <Card className="p-5">
-        <p className="text-sm text-gray-400 text-center">
+        <p className="text-sm text-text-muted text-center">
           Protocol not initialized
         </p>
       </Card>
@@ -47,14 +51,23 @@ export function MarketStats() {
   const longOi = priceToNumber(globalState.totalLongOi);
   const shortOi = priceToNumber(globalState.totalShortOi);
   const maxLev = globalState.maxLeverage.toNumber();
-  const fundingRate = calculateFundingRate(globalState.totalLongOi, globalState.totalShortOi);
+  const fundingRate = calculateFundingRate(
+    globalState.totalLongOi,
+    globalState.totalShortOi,
+  );
 
   return (
     <Card className="p-5">
-      <h3 className="text-sm font-semibold text-gray-900 mb-3">Market Stats</h3>
-      <div className="divide-y divide-gray-100">
+      <h3 className="text-sm font-semibold text-text-primary mb-3">
+        Market Stats
+      </h3>
+      <div className="divide-y divide-border-light">
         <StatRow label="Long OI" value={formatUsd(longOi)} color="text-long" />
-        <StatRow label="Short OI" value={formatUsd(shortOi)} color="text-short" />
+        <StatRow
+          label="Short OI"
+          value={formatUsd(shortOi)}
+          color="text-short"
+        />
         <StatRow
           label="OI Ratio"
           value={
@@ -65,8 +78,17 @@ export function MarketStats() {
         />
         <StatRow
           label="Funding Rate"
-          value={`${fundingRate > 0 ? "+" : ""}${formatNumber(fundingRate, 4)}%`}
-          color={fundingRate > 0 ? "text-short" : fundingRate < 0 ? "text-long" : undefined}
+          value={`${fundingRate > 0 ? "+" : ""}${formatNumber(
+            fundingRate,
+            4,
+          )}%`}
+          color={
+            fundingRate > 0
+              ? "text-short"
+              : fundingRate < 0
+              ? "text-long"
+              : undefined
+          }
         />
         <StatRow label="Max Leverage" value={`${maxLev}x`} />
         <StatRow

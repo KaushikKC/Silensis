@@ -25,7 +25,10 @@ export function FundingPanel({ onSuccess, onError }: FundingPanelProps) {
 
   // Tick the clock every second for countdown
   useEffect(() => {
-    const interval = setInterval(() => setNow(Math.floor(Date.now() / 1000)), 1000);
+    const interval = setInterval(
+      () => setNow(Math.floor(Date.now() / 1000)),
+      1000,
+    );
     return () => clearInterval(interval);
   }, []);
 
@@ -40,18 +43,23 @@ export function FundingPanel({ onSuccess, onError }: FundingPanelProps) {
   if (!globalState) {
     return (
       <Card className="p-5">
-        <p className="text-sm text-gray-400 text-center">Protocol not initialized</p>
+        <p className="text-sm text-text-muted text-center">
+          Protocol not initialized
+        </p>
       </Card>
     );
   }
 
   const longOi = priceToNumber(globalState.totalLongOi);
   const shortOi = priceToNumber(globalState.totalShortOi);
-  const fundingRate = calculateFundingRate(globalState.totalLongOi, globalState.totalShortOi);
+  const fundingRate = calculateFundingRate(
+    globalState.totalLongOi,
+    globalState.totalShortOi,
+  );
   const lastFundingTime = globalState.lastFundingTime.toNumber();
   const nextFundingTime = lastFundingTime + FUNDING_INTERVAL_SECS;
   const timeUntilFunding = Math.max(0, nextFundingTime - now);
-  const canApply = timeUntilFunding === 0 && (longOi + shortOi) > 0;
+  const canApply = timeUntilFunding === 0 && longOi + shortOi > 0;
 
   const minutes = Math.floor(timeUntilFunding / 60);
   const seconds = timeUntilFunding % 60;
@@ -67,24 +75,28 @@ export function FundingPanel({ onSuccess, onError }: FundingPanelProps) {
   };
 
   // Cumulative funding rates (stored as i128 on-chain, divided by FUNDING_RATE_PRECISION = 1e6)
-  const cumulativeLong = globalState.cumulativeFundingRateLong.toNumber() / 1_000_000;
-  const cumulativeShort = globalState.cumulativeFundingRateShort.toNumber() / 1_000_000;
+  const cumulativeLong =
+    globalState.cumulativeFundingRateLong.toNumber() / 1_000_000;
+  const cumulativeShort =
+    globalState.cumulativeFundingRateShort.toNumber() / 1_000_000;
 
   return (
     <Card className="p-5">
-      <h3 className="text-sm font-semibold text-gray-900 mb-3">Funding Rate</h3>
+      <h3 className="text-sm font-semibold text-text-primary mb-3">
+        Funding Rate
+      </h3>
 
       <div className="space-y-2">
         {/* Current Rate */}
-        <div className="flex items-center justify-between py-2">
-          <span className="text-sm text-gray-500">Current Rate</span>
+        <div className="flex items-center justify-between py-2.5">
+          <span className="text-sm text-text-secondary">Current Rate</span>
           <span
             className={`text-sm font-semibold tabular-nums ${
               fundingRate > 0
                 ? "text-short"
                 : fundingRate < 0
                 ? "text-long"
-                : "text-gray-900"
+                : "text-text-primary"
             }`}
           >
             {fundingRate > 0 ? "+" : ""}
@@ -93,9 +105,9 @@ export function FundingPanel({ onSuccess, onError }: FundingPanelProps) {
         </div>
 
         {/* Direction indicator */}
-        <div className="flex items-center justify-between py-2 border-t border-gray-100">
-          <span className="text-sm text-gray-500">Flow</span>
-          <span className="text-xs font-medium text-gray-600">
+        <div className="flex items-center justify-between py-2.5 border-t border-border-light">
+          <span className="text-sm text-text-secondary">Flow</span>
+          <span className="text-xs font-medium text-text-secondary">
             {fundingRate > 0
               ? "Longs pay Shorts"
               : fundingRate < 0
@@ -105,28 +117,30 @@ export function FundingPanel({ onSuccess, onError }: FundingPanelProps) {
         </div>
 
         {/* Cumulative funding */}
-        <div className="flex items-center justify-between py-2 border-t border-gray-100">
-          <span className="text-sm text-gray-500">Cum. Long</span>
+        <div className="flex items-center justify-between py-2.5 border-t border-border-light">
+          <span className="text-sm text-text-secondary">Cum. Long</span>
           <span className="text-sm font-medium tabular-nums">
             {formatNumber(cumulativeLong * 100, 4)}%
           </span>
         </div>
-        <div className="flex items-center justify-between py-2 border-t border-gray-100">
-          <span className="text-sm text-gray-500">Cum. Short</span>
+        <div className="flex items-center justify-between py-2.5 border-t border-border-light">
+          <span className="text-sm text-text-secondary">Cum. Short</span>
           <span className="text-sm font-medium tabular-nums">
             {formatNumber(cumulativeShort * 100, 4)}%
           </span>
         </div>
 
         {/* Countdown */}
-        <div className="flex items-center justify-between py-2 border-t border-gray-100">
-          <span className="text-sm text-gray-500">Next Funding</span>
+        <div className="flex items-center justify-between py-2.5 border-t border-border-light">
+          <span className="text-sm text-text-secondary">Next Funding</span>
           <span
             className={`text-sm font-semibold tabular-nums ${
-              canApply ? "text-long" : "text-gray-900"
+              canApply ? "text-long" : "text-text-primary"
             }`}
           >
-            {canApply ? "Ready" : `${minutes}m ${seconds.toString().padStart(2, "0")}s`}
+            {canApply
+              ? "Ready"
+              : `${minutes}m ${seconds.toString().padStart(2, "0")}s`}
           </span>
         </div>
       </div>
@@ -147,7 +161,7 @@ export function FundingPanel({ onSuccess, onError }: FundingPanelProps) {
             ? "Apply Funding"
             : "Waiting for Interval"}
         </Button>
-        <p className="text-xs text-gray-400 mt-2 text-center">
+        <p className="text-xs text-text-muted mt-2 text-center">
           Anyone can trigger funding once per hour.
           {fundingRate > 0
             ? " Longs will be charged."
