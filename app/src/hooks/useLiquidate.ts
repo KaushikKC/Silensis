@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { useProgram } from "./useProgram";
-import { getUserVaultPda } from "@/lib/pdas";
+import { getUserVaultPda, getGlobalStatePda, getPriceFeedPda } from "@/lib/pdas";
 
 export function useLiquidate() {
   const { program } = useProgram();
@@ -17,16 +17,15 @@ export function useLiquidate() {
 
       setLoading(true);
       try {
-        const liquidatorVault = getUserVaultPda(wallet.publicKey);
-        const ownerVault = getUserVaultPda(positionOwner);
-
         const tx = await program.methods
           .liquidate()
           .accounts({
             liquidator: wallet.publicKey,
-            liquidatorVault,
+            liquidatorVault: getUserVaultPda(wallet.publicKey),
             position: positionPda,
-            ownerVault,
+            ownerVault: getUserVaultPda(positionOwner),
+            globalState: getGlobalStatePda(),
+            priceFeed: getPriceFeedPda(),
           } as any)
           .rpc();
         return tx;

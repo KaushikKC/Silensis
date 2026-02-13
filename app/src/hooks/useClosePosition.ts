@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { useProgram } from "./useProgram";
-import { getPositionPda } from "@/lib/pdas";
+import { getPositionPda, getUserVaultPda, getGlobalStatePda, getPriceFeedPda } from "@/lib/pdas";
 import BN from "bn.js";
 
 export function useClosePosition() {
@@ -23,7 +23,10 @@ export function useClosePosition() {
           .closePosition()
           .accounts({
             user: wallet.publicKey,
+            userVault: getUserVaultPda(wallet.publicKey),
             position: positionPda,
+            globalState: getGlobalStatePda(),
+            priceFeed: getPriceFeedPda(),
           } as any)
           .rpc();
         return tx;

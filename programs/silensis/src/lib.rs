@@ -8,7 +8,7 @@ pub mod state;
 
 use instructions::*;
 
-declare_id!("ErsZC2zCgRDTHH83C7Bg8Xi9sr47jE5gGNzCdsqfKsK2");
+declare_id!("AY4EDSxDQXhx5neK8ygEuZY1ogE8JkeTVjpUNSwhyJep");
 
 #[program]
 pub mod silensis {

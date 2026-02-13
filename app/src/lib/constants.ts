@@ -1,7 +1,7 @@
 import { PublicKey } from "@solana/web3.js";
 
 export const PROGRAM_ID = new PublicKey(
-  "ErsZC2zCgRDTHH83C7Bg8Xi9sr47jE5gGNzCdsqfKsK2"
+  "AY4EDSxDQXhx5neK8ygEuZY1ogE8JkeTVjpUNSwhyJep",
 );
 
 export const CLUSTER_URL =

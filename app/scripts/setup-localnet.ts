@@ -29,7 +29,7 @@ import * as os from "os";
 import * as path from "path";
 
 // Load IDL
-const idlPath = path.resolve(__dirname, "../../target/idl/silensis.json");
+const idlPath = path.resolve(__dirname, "../../target/idl/mini_perps.json");
 const idl = JSON.parse(fs.readFileSync(idlPath, "utf-8"));
 
 // Config

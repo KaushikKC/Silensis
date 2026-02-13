@@ -5,7 +5,7 @@
  * IDL can be found at `src/idl/mini_perps.json`.
  */
 export type MiniPerps = {
-  address: "ErsZC2zCgRDTHH83C7Bg8Xi9sr47jE5gGNzCdsqfKsK2";
+  address: "AY4EDSxDQXhx5neK8ygEuZY1ogE8JkeTVjpUNSwhyJep";
   metadata: {
     name: "miniPerps";
     version: "0.1.0";

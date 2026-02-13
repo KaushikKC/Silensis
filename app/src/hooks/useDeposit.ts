@@ -5,6 +5,7 @@ import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { getAssociatedTokenAddress } from "@solana/spl-token";
 import { useProgram } from "./useProgram";
 import { useGlobalState } from "./useGlobalState";
+import { getUserVaultPda, getGlobalStatePda, getTreasuryPda } from "@/lib/pdas";
 import BN from "bn.js";
 
 export function useDeposit() {
@@ -28,6 +29,9 @@ export function useDeposit() {
           .accounts({
             user: wallet.publicKey,
             userAta,
+            userVault: getUserVaultPda(wallet.publicKey),
+            globalState: getGlobalStatePda(),
+            treasury: getTreasuryPda(),
           } as any)
           .rpc();
         return tx;

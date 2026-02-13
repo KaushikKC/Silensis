@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { useProgram } from "./useProgram";
+import { getGlobalStatePda, getPriceFeedPda } from "@/lib/pdas";
 
 export function useApplyFunding() {
   const { program } = useProgram();
@@ -18,6 +19,8 @@ export function useApplyFunding() {
         .applyFunding()
         .accounts({
           caller: wallet.publicKey,
+          globalState: getGlobalStatePda(),
+          priceFeed: getPriceFeedPda(),
         } as any)
         .rpc();
       return tx;

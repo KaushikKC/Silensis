@@ -16,7 +16,7 @@ import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
 
-const idlPath = path.resolve(__dirname, "../../target/idl/silensis.json");
+const idlPath = path.resolve(__dirname, "../../target/idl/mini_perps.json");
 const idl = JSON.parse(fs.readFileSync(idlPath, "utf-8"));
 
 const RPC_URL = process.env.RPC_URL || "http://127.0.0.1:8899";
