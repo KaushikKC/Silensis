@@ -2,8 +2,8 @@ import { Program, AnchorProvider } from "@coral-xyz/anchor";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { AnchorWallet } from "@solana/wallet-adapter-react";
 import { PROGRAM_ID } from "./constants";
-import idl from "../../../target/idl/mini_perps.json";
-import type { MiniPerps } from "../../../target/types/mini_perps";
+import idl from "../../../target/idl/silensis.json";
+import type { Silensis } from "../../../target/types/silensis";
 
 export function getProvider(connection: Connection, wallet: AnchorWallet) {
   return new AnchorProvider(connection, wallet, {
@@ -13,7 +13,7 @@ export function getProvider(connection: Connection, wallet: AnchorWallet) {
 
 export function getProgram(connection: Connection, wallet: AnchorWallet) {
   const provider = getProvider(connection, wallet);
-  return new Program<MiniPerps>(idl as MiniPerps, provider);
+  return new Program<Silensis>(idl as Silensis, provider);
 }
 
 export function getReadonlyProgram(connection: Connection) {
@@ -26,5 +26,5 @@ export function getReadonlyProgram(connection: Connection) {
   const provider = new AnchorProvider(connection, dummyWallet, {
     commitment: "confirmed",
   });
-  return new Program<MiniPerps>(idl as MiniPerps, provider);
+  return new Program<Silensis>(idl as Silensis, provider);
 }

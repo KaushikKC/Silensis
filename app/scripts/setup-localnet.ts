@@ -29,7 +29,7 @@ import * as os from "os";
 import * as path from "path";
 
 // Load IDL
-const idlPath = path.resolve(__dirname, "../../target/idl/mini_perps.json");
+const idlPath = path.resolve(__dirname, "../../target/idl/silensis.json");
 const idl = JSON.parse(fs.readFileSync(idlPath, "utf-8"));
 
 // Config
@@ -40,10 +40,7 @@ const SOL_PRICE = 100 * 10 ** USDC_DECIMALS; // $100
 
 async function main() {
   // Load local wallet
-  const walletPath = path.resolve(
-    os.homedir(),
-    ".config/solana/id.json"
-  );
+  const walletPath = path.resolve(os.homedir(), ".config/solana/id.json");
   const secretKey = JSON.parse(fs.readFileSync(walletPath, "utf-8"));
   const payer = Keypair.fromSecretKey(Uint8Array.from(secretKey));
 
@@ -64,7 +61,7 @@ async function main() {
     payer,
     payer.publicKey, // mint authority
     null, // freeze authority
-    USDC_DECIMALS
+    USDC_DECIMALS,
   );
   console.log("   USDC Mint:", usdcMint.toBase58());
 
@@ -103,7 +100,7 @@ async function main() {
     connection,
     payer,
     usdcMint,
-    payer.publicKey
+    payer.publicKey,
   );
   console.log("   ATA:", ata.address.toBase58());
 
@@ -115,7 +112,7 @@ async function main() {
     usdcMint,
     ata.address,
     payer.publicKey,
-    INITIAL_BALANCE
+    INITIAL_BALANCE,
   );
   console.log("   MintTo tx:", mintTx);
 

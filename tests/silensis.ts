@@ -7,12 +7,7 @@ import {
   mintTo,
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
-import {
-  PublicKey,
-  Keypair,
-  SystemProgram,
-  SYSVAR_RENT_PUBKEY,
-} from "@solana/web3.js";
+import { PublicKey, Keypair, SystemProgram, SYSVAR_RENT_PUBKEY } from "@solana/web3.js";
 import { assert, expect } from "chai";
 
 describe("Silensis", () => {
@@ -66,7 +61,7 @@ describe("Silensis", () => {
       (authority as any).payer,
       authority.publicKey,
       null,
-      USDC_DECIMALS,
+      USDC_DECIMALS
     );
 
     // Setup authority ATA
@@ -74,7 +69,7 @@ describe("Silensis", () => {
       provider.connection,
       (authority as any).payer,
       usdcMint,
-      authority.publicKey,
+      authority.publicKey
     );
     userAta = authorityAtaAccount.address;
 
@@ -85,14 +80,14 @@ describe("Silensis", () => {
       usdcMint,
       userAta,
       authority.publicKey,
-      INITIAL_BALANCE,
+      INITIAL_BALANCE
     );
 
     // Setup trader
     trader = Keypair.generate();
     const sig = await provider.connection.requestAirdrop(
       trader.publicKey,
-      10 * anchor.web3.LAMPORTS_PER_SOL,
+      10 * anchor.web3.LAMPORTS_PER_SOL
     );
     await provider.connection.confirmTransaction(sig, "confirmed");
 
@@ -100,7 +95,7 @@ describe("Silensis", () => {
       provider.connection,
       trader,
       usdcMint,
-      trader.publicKey,
+      trader.publicKey
     );
     traderAta = traderAtaAccount.address;
 
@@ -111,14 +106,14 @@ describe("Silensis", () => {
       usdcMint,
       traderAta,
       authority.publicKey,
-      INITIAL_BALANCE,
+      INITIAL_BALANCE
     );
 
     // Setup liquidator
     liquidator = Keypair.generate();
     const sig2 = await provider.connection.requestAirdrop(
       liquidator.publicKey,
-      10 * anchor.web3.LAMPORTS_PER_SOL,
+      10 * anchor.web3.LAMPORTS_PER_SOL
     );
     await provider.connection.confirmTransaction(sig2, "confirmed");
 
@@ -126,7 +121,7 @@ describe("Silensis", () => {
       provider.connection,
       liquidator,
       usdcMint,
-      liquidator.publicKey,
+      liquidator.publicKey
     );
     liquidatorAta = liquidatorAtaAccount.address;
   });
@@ -145,9 +140,7 @@ describe("Silensis", () => {
         } as any)
         .rpc();
 
-      const globalState = await program.account.globalState.fetch(
-        globalStatePda,
-      );
+      const globalState = await program.account.globalState.fetch(globalStatePda);
       assert.ok(globalState.authority.equals(authority.publicKey));
       assert.ok(globalState.usdcMint.equals(usdcMint));
       assert.equal(globalState.maxLeverage.toNumber(), 50);
@@ -213,7 +206,7 @@ describe("Silensis", () => {
         .rpc();
 
       const vault = await program.account.userVault.fetch(
-        userVaultPda(authority.publicKey),
+        userVaultPda(authority.publicKey)
       );
       assert.equal(vault.depositedAmount.toNumber(), depositAmount);
       assert.equal(vault.lockedMargin.toNumber(), 0);
@@ -232,11 +225,11 @@ describe("Silensis", () => {
         .rpc();
 
       const vault = await program.account.userVault.fetch(
-        userVaultPda(authority.publicKey),
+        userVaultPda(authority.publicKey)
       );
       assert.equal(
         vault.depositedAmount.toNumber(),
-        7000 * 10 ** USDC_DECIMALS,
+        7000 * 10 ** USDC_DECIMALS
       );
     });
 
@@ -253,7 +246,7 @@ describe("Silensis", () => {
         .rpc();
 
       const vault = await program.account.userVault.fetch(
-        userVaultPda(trader.publicKey),
+        userVaultPda(trader.publicKey)
       );
       assert.equal(vault.depositedAmount.toNumber(), depositAmount);
     });
@@ -290,11 +283,11 @@ describe("Silensis", () => {
         .rpc();
 
       const vault = await program.account.userVault.fetch(
-        userVaultPda(authority.publicKey),
+        userVaultPda(authority.publicKey)
       );
       assert.equal(
         vault.depositedAmount.toNumber(),
-        6000 * 10 ** USDC_DECIMALS,
+        6000 * 10 ** USDC_DECIMALS
       );
     });
 
@@ -359,7 +352,7 @@ describe("Silensis", () => {
 
       // Check position
       const position = await program.account.position.fetch(
-        positionPda(authority.publicKey, positionId),
+        positionPda(authority.publicKey, positionId)
       );
       assert.ok(position.owner.equals(authority.publicKey));
       assert.equal(position.positionId.toNumber(), positionId);
@@ -375,7 +368,7 @@ describe("Silensis", () => {
 
       // Check vault margin locked
       const vault = await program.account.userVault.fetch(
-        userVaultPda(authority.publicKey),
+        userVaultPda(authority.publicKey)
       );
       assert.equal(vault.lockedMargin.toNumber(), 10_000_000);
 
@@ -402,7 +395,7 @@ describe("Silensis", () => {
         .rpc();
 
       const position = await program.account.position.fetch(
-        positionPda(authority.publicKey, positionId),
+        positionPda(authority.publicKey, positionId)
       );
       assert.deepEqual(position.direction, { short: {} });
       assert.equal(position.size.toNumber(), 2 * SIZE_PRECISION);
@@ -482,9 +475,7 @@ describe("Silensis", () => {
         .accounts({ authority: authority.publicKey } as any)
         .rpc();
 
-      const globalBefore = await program.account.globalState.fetch(
-        globalStatePda,
-      );
+      const globalBefore = await program.account.globalState.fetch(globalStatePda);
       const positionId = globalBefore.nextPositionId.toNumber();
 
       await program.methods
@@ -500,7 +491,7 @@ describe("Silensis", () => {
         .rpc();
 
       const vaultBefore = await program.account.userVault.fetch(
-        userVaultPda(trader.publicKey),
+        userVaultPda(trader.publicKey)
       );
 
       // Price goes up 10%
@@ -523,18 +514,18 @@ describe("Silensis", () => {
 
       // PnL = (110 - 100) * 1 SOL / SIZE_PRECISION = $10 = 10_000_000
       const vaultAfter = await program.account.userVault.fetch(
-        userVaultPda(trader.publicKey),
+        userVaultPda(trader.publicKey)
       );
 
       // Deposited should increase by PnL ($10)
       assert.equal(
         vaultAfter.depositedAmount.toNumber(),
-        vaultBefore.depositedAmount.toNumber() + 10_000_000,
+        vaultBefore.depositedAmount.toNumber() + 10_000_000
       );
       // Locked margin should decrease by margin ($10)
       assert.equal(
         vaultAfter.lockedMargin.toNumber(),
-        vaultBefore.lockedMargin.toNumber() - 10_000_000,
+        vaultBefore.lockedMargin.toNumber() - 10_000_000
       );
 
       // Position should be closed
@@ -549,9 +540,7 @@ describe("Silensis", () => {
         .accounts({ authority: authority.publicKey } as any)
         .rpc();
 
-      const globalBefore = await program.account.globalState.fetch(
-        globalStatePda,
-      );
+      const globalBefore = await program.account.globalState.fetch(globalStatePda);
       const positionId = globalBefore.nextPositionId.toNumber();
 
       await program.methods
@@ -567,7 +556,7 @@ describe("Silensis", () => {
         .rpc();
 
       const vaultBefore = await program.account.userVault.fetch(
-        userVaultPda(trader.publicKey),
+        userVaultPda(trader.publicKey)
       );
 
       // Price goes down 10% (profit for short)
@@ -589,13 +578,13 @@ describe("Silensis", () => {
         .rpc();
 
       const vaultAfter = await program.account.userVault.fetch(
-        userVaultPda(trader.publicKey),
+        userVaultPda(trader.publicKey)
       );
 
       // PnL = (100 - 90) * 1 SOL / SIZE_PRECISION = $10 = 10_000_000
       assert.equal(
         vaultAfter.depositedAmount.toNumber(),
-        vaultBefore.depositedAmount.toNumber() + 10_000_000,
+        vaultBefore.depositedAmount.toNumber() + 10_000_000
       );
 
       const position = await program.account.position.fetch(posKey);
@@ -608,9 +597,7 @@ describe("Silensis", () => {
         .accounts({ authority: authority.publicKey } as any)
         .rpc();
 
-      const globalBefore = await program.account.globalState.fetch(
-        globalStatePda,
-      );
+      const globalBefore = await program.account.globalState.fetch(globalStatePda);
       const positionId = globalBefore.nextPositionId.toNumber();
 
       await program.methods
@@ -626,7 +613,7 @@ describe("Silensis", () => {
         .rpc();
 
       const vaultBefore = await program.account.userVault.fetch(
-        userVaultPda(trader.publicKey),
+        userVaultPda(trader.publicKey)
       );
 
       // Price goes down 5%
@@ -648,13 +635,13 @@ describe("Silensis", () => {
         .rpc();
 
       const vaultAfter = await program.account.userVault.fetch(
-        userVaultPda(trader.publicKey),
+        userVaultPda(trader.publicKey)
       );
 
       // PnL = (95 - 100) * 1 SOL = -$5 = -5_000_000
       assert.equal(
         vaultAfter.depositedAmount.toNumber(),
-        vaultBefore.depositedAmount.toNumber() - 5_000_000,
+        vaultBefore.depositedAmount.toNumber() - 5_000_000
       );
 
       const position = await program.account.position.fetch(posKey);
@@ -669,9 +656,7 @@ describe("Silensis", () => {
       // First let's see what positionId=2 looks like
       try {
         // Let's find a closed position
-        const globalBefore = await program.account.globalState.fetch(
-          globalStatePda,
-        );
+        const globalBefore = await program.account.globalState.fetch(globalStatePda);
         // positionId 2 was the first we opened for the trader
         const closedPosKey = positionPda(trader.publicKey, 2);
 
@@ -702,9 +687,7 @@ describe("Silensis", () => {
         .accounts({ authority: authority.publicKey } as any)
         .rpc();
 
-      const globalBefore = await program.account.globalState.fetch(
-        globalStatePda,
-      );
+      const globalBefore = await program.account.globalState.fetch(globalStatePda);
       const positionId = globalBefore.nextPositionId.toNumber();
 
       // Open 10x leveraged long: 1 SOL at $100
@@ -722,7 +705,7 @@ describe("Silensis", () => {
         .rpc();
 
       const vaultBefore = await program.account.userVault.fetch(
-        userVaultPda(trader.publicKey),
+        userVaultPda(trader.publicKey)
       );
 
       // Price crashes by 6%: margin ratio = ($10 - $6) / $94 = 4.26% < 5% maintenance
@@ -750,23 +733,20 @@ describe("Silensis", () => {
 
       // Verify liquidator received fee
       const liquidatorVault = await program.account.userVault.fetch(
-        userVaultPda(liquidator.publicKey),
+        userVaultPda(liquidator.publicKey)
       );
       // Liquidation fee = margin * 50 bps = $10 * 0.5% = $0.05 = 50_000
       assert.ok(liquidatorVault.depositedAmount.toNumber() > 0);
 
       // Verify owner vault was updated
       const ownerVault = await program.account.userVault.fetch(
-        userVaultPda(trader.publicKey),
+        userVaultPda(trader.publicKey)
       );
       // Loss = (100-94) * 1 = $6, effective_margin = $10 - $6 = $4
       // liq_fee = $10 * 0.005 = $0.05
       // remaining = $4 - $0.05 = $3.95 goes back
       // deposited should be reduced by margin - remaining
-      assert.ok(
-        ownerVault.depositedAmount.toNumber() <
-          vaultBefore.depositedAmount.toNumber(),
-      );
+      assert.ok(ownerVault.depositedAmount.toNumber() < vaultBefore.depositedAmount.toNumber());
     });
 
     it("fails to liquidate a healthy position", async () => {
@@ -776,9 +756,7 @@ describe("Silensis", () => {
         .accounts({ authority: authority.publicKey } as any)
         .rpc();
 
-      const globalBefore = await program.account.globalState.fetch(
-        globalStatePda,
-      );
+      const globalBefore = await program.account.globalState.fetch(globalStatePda);
       const positionId = globalBefore.nextPositionId.toNumber();
 
       // Open a position with low leverage (very healthy)
@@ -827,9 +805,7 @@ describe("Silensis", () => {
         .accounts({ authority: authority.publicKey } as any)
         .rpc();
 
-      const globalBefore = await program.account.globalState.fetch(
-        globalStatePda,
-      );
+      const globalBefore = await program.account.globalState.fetch(globalStatePda);
       const positionId = globalBefore.nextPositionId.toNumber();
 
       // Open 10x leveraged short: 1 SOL at $100
@@ -903,10 +879,9 @@ describe("Silensis", () => {
         .rpc();
 
       const vault = await program.account.userVault.fetch(
-        userVaultPda(authority.publicKey),
+        userVaultPda(authority.publicKey)
       );
-      const available =
-        vault.depositedAmount.toNumber() - vault.lockedMargin.toNumber();
+      const available = vault.depositedAmount.toNumber() - vault.lockedMargin.toNumber();
 
       // Try to withdraw more than available (deposited - locked)
       if (available > 0) {
@@ -943,9 +918,7 @@ describe("Silensis", () => {
         .accounts({ authority: authority.publicKey } as any)
         .rpc();
 
-      const globalBefore = await program.account.globalState.fetch(
-        globalStatePda,
-      );
+      const globalBefore = await program.account.globalState.fetch(globalStatePda);
       const positionId = globalBefore.nextPositionId.toNumber();
 
       // Open at max leverage (50x)
@@ -964,7 +937,7 @@ describe("Silensis", () => {
         .rpc();
 
       const position = await program.account.position.fetch(
-        positionPda(trader.publicKey, positionId),
+        positionPda(trader.publicKey, positionId)
       );
       assert.equal(position.leverage.toNumber(), 50);
       assert.equal(position.margin.toNumber(), 2_000_000); // $2

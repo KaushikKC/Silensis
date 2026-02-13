@@ -11,7 +11,7 @@ use instructions::*;
 declare_id!("ErsZC2zCgRDTHH83C7Bg8Xi9sr47jE5gGNzCdsqfKsK2");
 
 #[program]
-pub mod mini_perps {
+pub mod silensis {
     use super::*;
 
     pub fn initialize(ctx: Context<Initialize>) -> Result<()> {

@@ -10,7 +10,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Mini-Perps | Perpetual Futures DEX",
+  title: "Silensis | Perpetual Futures DEX",
   description: "Trade perpetual futures on Solana with up to 10x leverage",
 };
 

@@ -1,4 +1,4 @@
-# Mini-Perps
+# Silensis
 
 A perpetual futures DEX on Solana. Traders can take leveraged long/short positions on SOL/USD using USDC as collateral.
 
@@ -6,7 +6,7 @@ A perpetual futures DEX on Solana. Traders can take leveraged long/short positio
 
 ```
 ┌─────────────────────────────────────────┐
-│              Mini-Perps                 │
+│              Silensis                  │
 ├──────────┬──────────┬───────────────────┤
 │  Vault   │ Position │    Liquidation    │
 │ deposit  │  open    │    liquidate      │

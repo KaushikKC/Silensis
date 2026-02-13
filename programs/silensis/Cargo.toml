@@ -1,13 +1,13 @@
 [package]
-name = "mini-perps"
+name = "silensis"
 version = "0.1.0"
-description = "Perpetual futures DEX on Solana"
+description = "Silensis - Perpetual futures DEX on Solana"
 edition = "2021"
 license = "MIT"
 
 [lib]
 crate-type = ["cdylib", "lib"]
-name = "mini_perps"
+name = "silensis"
 
 [features]
 default = []
