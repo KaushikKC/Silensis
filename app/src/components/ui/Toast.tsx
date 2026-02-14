@@ -12,7 +12,7 @@ interface ToastContainerProps {
 const icons = {
   success: (
     <svg
-      className="w-5 h-5 text-long"
+      className="w-4 h-4 text-long shrink-0"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -27,7 +27,7 @@ const icons = {
   ),
   error: (
     <svg
-      className="w-5 h-5 text-short"
+      className="w-4 h-4 text-short shrink-0"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -42,7 +42,7 @@ const icons = {
   ),
   info: (
     <svg
-      className="w-5 h-5 text-accent"
+      className="w-4 h-4 text-accent shrink-0"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -65,9 +65,14 @@ function ToastItem({
   onRemove: () => void;
 }) {
   useEffect(() => {
-    const timer = setTimeout(onRemove, 4000);
+    const timer = setTimeout(onRemove, 3500);
     return () => clearTimeout(timer);
   }, [onRemove]);
+
+  const displayMessage =
+    toast.message.length > 100
+      ? toast.message.slice(0, 100).trim() + "…"
+      : toast.message;
 
   return (
     <motion.div
@@ -76,11 +81,14 @@ function ToastItem({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 80 }}
       transition={{ type: "spring", stiffness: 500, damping: 30 }}
-      className="flex items-center gap-3 bg-card rounded-xl shadow-card-elevated border border-border px-4 py-3 min-w-[280px]"
+      className="flex items-center gap-2 bg-card rounded-lg shadow-card-elevated border border-border px-3 py-2 max-w-[min(320px,90vw)]"
     >
-      {icons[toast.type]}
-      <span className="text-sm font-medium text-text-primary">
-        {toast.message}
+      <span className="shrink-0">{icons[toast.type]}</span>
+      <span
+        className="text-xs font-medium text-text-primary truncate"
+        title={toast.message}
+      >
+        {displayMessage}
       </span>
     </motion.div>
   );
@@ -88,7 +96,7 @@ function ToastItem({
 
 export function ToastContainer({ toasts, onRemove }: ToastContainerProps) {
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-2">
+    <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-1.5">
       <AnimatePresence mode="popLayout">
         {toasts.map((toast) => (
           <ToastItem

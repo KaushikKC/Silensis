@@ -44,13 +44,17 @@ async function main() {
   const secretKey = JSON.parse(fs.readFileSync(walletPath, "utf-8"));
   const payer = Keypair.fromSecretKey(Uint8Array.from(secretKey));
 
+  const isLocalnet =
+    RPC_URL.includes("127.0.0.1") || RPC_URL.includes("localhost");
+  const commitment = isLocalnet ? "processed" : "confirmed";
+
   const connection = new Connection(RPC_URL, {
-    commitment: "confirmed",
+    commitment,
     confirmTransactionInitialTimeout: 90_000,
   });
   const wallet = new Wallet(payer);
   const provider = new AnchorProvider(connection, wallet, {
-    commitment: "confirmed",
+    commitment,
   });
   const program = new Program(idl, provider);
 

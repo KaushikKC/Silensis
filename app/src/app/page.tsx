@@ -35,7 +35,8 @@ export default function Home() {
 
   const addToast = useCallback((type: Toast["type"], message: string) => {
     const id = Math.random().toString(36).slice(2);
-    setToasts((prev) => [...prev, { id, type, message }]);
+    // Single toast: replace previous so they don’t stack
+    setToasts((prev) => [{ id, type, message }]);
   }, []);
 
   const removeToast = useCallback((id: string) => {

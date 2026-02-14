@@ -1,13 +1,13 @@
 import { Program, AnchorProvider } from "@coral-xyz/anchor";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { AnchorWallet } from "@solana/wallet-adapter-react";
-import { PROGRAM_ID } from "./constants";
+import { PROGRAM_ID, CONNECTION_CONFIG } from "./constants";
 import idl from "../idl/mini_perps.json";
 import type { MiniPerps } from "../idl/mini_perps";
 
 export function getProvider(connection: Connection, wallet: AnchorWallet) {
   return new AnchorProvider(connection, wallet, {
-    commitment: "confirmed",
+    commitment: CONNECTION_CONFIG.commitment,
   });
 }
 
@@ -24,7 +24,7 @@ export function getReadonlyProgram(connection: Connection) {
     signAllTransactions: () => Promise.reject(),
   } as AnchorWallet;
   const provider = new AnchorProvider(connection, dummyWallet, {
-    commitment: "confirmed",
+    commitment: CONNECTION_CONFIG.commitment,
   });
   return new Program<MiniPerps>(idl as MiniPerps, provider);
 }
